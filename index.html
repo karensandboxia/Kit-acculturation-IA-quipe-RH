@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit Acculturation IA — Équipe RH</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal-50: #E1F5EE;
+    --teal-400: #1D9E75;
+    --teal-600: #0F6E56;
+    --teal-700: #085041;
+    --blue-50: #E6F1FB;
+    --blue-600: #185FA5;
+    --amber-50: #FAEEDA;
+    --amber-600: #854F0B;
+    --purple-50: #EEEDFE;
+    --purple-600: #534AB7;
+    --coral-50: #FAECE7;
+    --coral-600: #993C1D;
+    --green-50: #EAF3DE;
+    --green-600: #3B6D11;
+    --red-50: #FCEBEB;
+    --red-600: #A32D2D;
+    --gray-50: #F7F6F2;
+    --gray-100: #EEECE5;
+    --gray-200: #D9D7CE;
+    --gray-800: #2C2C2A;
+    --text: #1a1a18;
+    --text-muted: #6b6b66;
+    --text-faint: #9a9a94;
+    --border: rgba(0,0,0,0.09);
+    --border-md: rgba(0,0,0,0.15);
+    --bg: #F9F8F4;
+    --surface: #FFFFFF;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(249,248,244,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--text); letter-spacing: -0.01em; }
+  .nav-brand span { color: var(--teal-600); }
+  .nav-progress { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text-muted); }
+  .progress-dots { display: flex; gap: 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-200); transition: background 0.3s; }
+  .dot.done { background: var(--teal-400); }
+
+  .hero {
+    padding: 5rem 2rem 4rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--teal-600);
+    background: var(--teal-50);
+    padding: 4px 12px; border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--teal-600); }
+  .hero p {
+    font-size: 17px; color: var(--text-muted); max-width: 560px;
+    line-height: 1.7; margin-bottom: 2.5rem;
+  }
+  .hero-stats {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); }
+  .stat-label { font-size: 13px; color: var(--text-muted); }
+
+  .progress-section {
+    max-width: 860px; margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-header span { font-size: 13px; color: var(--text-muted); }
+  .progress-header strong { font-size: 13px; font-weight: 500; color: var(--text); }
+  .bar-track { height: 4px; background: var(--gray-200); border-radius: 2px; }
+  .bar-fill { height: 4px; background: var(--teal-400); border-radius: 2px; width: 0; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+
+  .modules-section { max-width: 860px; margin: 0 auto; padding: 0 2rem 6rem; }
+  .section-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 1.5rem;
+  }
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1px; background: var(--border);
+    border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .module-card {
+    background: var(--surface);
+    padding: 1.75rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .module-card:hover { background: var(--gray-50); }
+  .module-card.active { background: var(--gray-50); }
+
+  .module-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; }
+  .module-num { font-family: 'DM Serif Display', serif; font-size: 13px; color: var(--text-faint); }
+  .module-tag {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .tag-socle    { background: var(--blue-50);   color: var(--blue-600); }
+  .tag-metier   { background: var(--amber-50);  color: var(--amber-600); }
+  .tag-pratique { background: var(--purple-50); color: var(--purple-600); }
+  .tag-ethique  { background: var(--coral-50);  color: var(--coral-600); }
+
+  .module-card h3 { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--text); margin-bottom: 0.5rem; line-height: 1.2; }
+  .module-card p  { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .module-footer  { display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; }
+  .duration { font-size: 12px; color: var(--text-faint); }
+  .done-pill { font-size: 11px; font-weight: 500; background: var(--green-50); color: var(--green-600); padding: 3px 10px; border-radius: 20px; display: none; }
+  .caret { font-size: 18px; color: var(--text-faint); transition: transform 0.2s; }
+  .module-card.active .caret { transform: rotate(180deg); }
+
+  .module-panel {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    padding: 2rem 2rem 1.75rem;
+  }
+  .module-panel.open { display: block; }
+
+  .panel-intro { font-size: 15px; color: var(--text-muted); line-height: 1.75; margin-bottom: 1.75rem; max-width: 640px; }
+
+  .tips { list-style: none; margin-bottom: 1.75rem; }
+  .tips li {
+    font-size: 14px; color: var(--text);
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+    display: flex; gap: 12px; align-items: flex-start;
+    line-height: 1.6;
+  }
+  .tips li:last-child { border-bottom: none; }
+  .tip-arrow { color: var(--teal-400); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+  .tip-label { font-weight: 500; }
+
+  .quiz { background: var(--gray-50); border-radius: var(--radius-sm); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+  .quiz-q { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 1rem; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    font-size: 13px; color: var(--text);
+    padding: 10px 14px; border: 1px solid var(--border-md);
+    border-radius: var(--radius-sm); background: var(--surface);
+    cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--teal-400); }
+  .quiz-opt.correct { background: var(--green-50); border-color: #639922; color: var(--green-600); }
+  .quiz-opt.wrong   { background: var(--red-50);   border-color: #E24B4A; color: var(--red-600); }
+
+  .panel-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .btn-done {
+    font-size: 13px; font-weight: 500; color: var(--text-muted);
+    border: 1px solid var(--border-md); border-radius: var(--radius-sm);
+    padding: 7px 16px; background: none; cursor: pointer;
+  }
+  .btn-done:hover { background: var(--gray-50); }
+
+  .charte-section { max-width: 860px; margin: 0 auto 6rem; padding: 0 2rem; }
+  .charte-card {
+    background: var(--gray-800); border-radius: var(--radius);
+    padding: 2.5rem; color: #e8e6df;
+  }
+  .charte-card h2 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 1rem; color: #f5f3ec; }
+  .charte-card p  { font-size: 14px; line-height: 1.75; color: #c8c5bc; margin-bottom: 1.5rem; }
+  .charte-rules { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .charte-rule {
+    background: rgba(255,255,255,0.06);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 13px; color: #d6d3ca;
+    line-height: 1.6;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .rule-num { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--teal-400); display: block; margin-bottom: 6px; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-size: 12px; color: var(--text-faint);
+  }
+
+  @media (max-width: 600px) {
+    .modules-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2rem; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">RH <span>× IA</span></div>
+  <div class="nav-progress">
+    <span id="nav-label">0/4</span>
+    <div class="progress-dots">
+      <div class="dot" id="dot-0"></div>
+      <div class="dot" id="dot-1"></div>
+      <div class="dot" id="dot-2"></div>
+      <div class="dot" id="dot-3"></div>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Kit acculturation IA · Équipe RH · Medtech</div>
+  <h1>L'IA au service<br>de votre <em>quotidien RH</em></h1>
+  <p>Vous utilisez déjà quelques outils IA. Ce kit vous aide à aller plus loin — avec des repères concrets adaptés aux réalités d'une entreprise industrielle du secteur médical.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">modules</div></div>
+    <div class="stat"><div class="stat-num">70'</div><div class="stat-label">de parcours</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">quiz interactifs</div></div>
+  </div>
+</section>
+
+<div class="progress-section">
+  <div class="progress-header">
+    <span>Progression</span>
+    <strong id="prog-text">0 module terminé</strong>
+  </div>
+  <div class="bar-track"><div class="bar-fill" id="bar"></div></div>
+</div>
+
+<section class="modules-section">
+  <div class="section-label">Les 4 modules</div>
+  <div class="modules-grid">
+
+    <!-- Module 0 -->
+    <div class="module-card" id="card-0" onclick="toggle(0)">
+      <div class="module-header">
+        <span class="module-num">01</span>
+        <span class="module-tag tag-socle">Socle</span>
+      </div>
+      <h3>IA générative : ce qui a vraiment changé</h3>
+      <p>Du Ctrl+F au copilote : comprendre le saut technologique en 15 minutes.</p>
+      <div class="module-footer">
+        <span class="duration">15 min</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="done-pill" id="done-0">Vu ✓</span>
+          <span class="caret">↓</span>
+        </div>
+      </div>
+    </div>
+    <div class="module-panel" id="panel-0">
+      <p class="panel-intro">Vous avez sûrement utilisé des outils d'automatisation RH depuis des années. Ce qui change avec l'IA générative, c'est la capacité à produire du texte, raisonner et s'adapter au contexte — sans règles codées en dur.</p>
+      <ul class="tips">
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Elle produit du contenu nouveau.</span> Textes, synthèses, plans — pas juste des règles si/alors comme les anciens outils RH.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Elle apprend du contexte que vous lui donnez.</span> Dans la conversation, pas depuis une base de données figée.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Ses erreurs sont « confiantes ».</span> Elle peut affirmer quelque chose de faux avec assurance. Vérifier reste indispensable — surtout pour les références légales.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">La qualité de votre instruction détermine le résultat.</span> Un bon prompt, c'est comme un bon brief : contexte + objectif + format attendu.</div></li>
+      </ul>
+      <div class="quiz" id="quiz-0">
+        <p class="quiz-q">Quiz : pourquoi l'IA peut-elle se tromper avec assurance ?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,false,0)">Elle manque de données sur l'industrie médicale</button>
+          <button class="quiz-opt" onclick="answer(this,true,0)">Elle prédit le texte le plus probable, pas le plus vrai</button>
+          <button class="quiz-opt" onclick="answer(this,false,0)">Elle ne comprend pas le français technique</button>
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button class="btn-done" onclick="markDone(0)">Marquer comme vu</button>
+      </div>
+    </div>
+
+    <!-- Module 1 -->
+    <div class="module-card" id="card-1" onclick="toggle(1)">
+      <div class="module-header">
+        <span class="module-num">02</span>
+        <span class="module-tag tag-metier">Métier RH</span>
+      </div>
+      <h3>IA et RH dans l'industrie médicale</h3>
+      <p>Recrutement, GPEC, formation, paie : cas d'usage concrets pour votre secteur.</p>
+      <div class="module-footer">
+        <span class="duration">20 min</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="done-pill" id="done-1">Vu ✓</span>
+          <span class="caret">↓</span>
+        </div>
+      </div>
+    </div>
+    <div class="module-panel" id="panel-1">
+      <p class="panel-intro">Dans une PME industrielle du secteur médical, les RH jonglent entre gestion de terrain, exigences réglementaires (ISO, MDR) et développement des compétences. Voici où l'IA apporte une vraie valeur ajoutée.</p>
+      <ul class="tips">
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Recrutement :</span> rédaction d'offres adaptées aux métiers de production et R&D, tri de CV sur critères définis, préparation de grilles d'entretien par poste.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">GPEC :</span> analyse des écarts de compétences, génération de cartographies de postes, aide à la rédaction de fiches de poste opérateur ou technicien.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Formation :</span> création de supports pédagogiques, synthèse de feedbacks terrain, suggestions de parcours selon profil et exigences qualité.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Communication interne :</span> rédaction d'emails RH, notes de service, comptes rendus de réunions CSE.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Paie & admin :</span> vérification de conformité de contrats, résumé de jurisprudence sociale récente, rédaction de courriers disciplinaires.</div></li>
+      </ul>
+      <div class="quiz" id="quiz-1">
+        <p class="quiz-q">Quiz : pour quel usage l'IA est-elle la moins fiable sans vérification ?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,false,1)">Rédiger un email de convocation</button>
+          <button class="quiz-opt" onclick="answer(this,true,1)">Citer un article de loi ou une jurisprudence</button>
+          <button class="quiz-opt" onclick="answer(this,false,1)">Reformuler une fiche de poste</button>
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button class="btn-done" onclick="markDone(1)">Marquer comme vu</button>
+      </div>
+    </div>
+
+    <!-- Module 2 -->
+    <div class="module-card" id="card-2" onclick="toggle(2)">
+      <div class="module-header">
+        <span class="module-num">03</span>
+        <span class="module-tag tag-pratique">Pratique</span>
+      </div>
+      <h3>Prompter comme un pro RH</h3>
+      <p>Techniques et templates pour obtenir de vrais résultats sur vos missions.</p>
+      <div class="module-footer">
+        <span class="duration">20 min</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="done-pill" id="done-2">Vu ✓</span>
+          <span class="caret">↓</span>
+        </div>
+      </div>
+    </div>
+    <div class="module-panel" id="panel-2">
+      <p class="panel-intro">Un bon prompt, c'est comme un bon brief à un prestataire : contexte, objectif, format attendu. Voici les techniques clés adaptées aux RH en industrie médicale.</p>
+      <ul class="tips">
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Donnez un rôle :</span> « Tu es un juriste RH expert en droit du travail français, spécialisé dans l'industrie... »</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Précisez votre contexte :</span> « Nous sommes une PME industrielle du secteur des dispositifs médicaux, environ [X] personnes, soumise aux exigences ISO 13485... »</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Définissez le format :</span> « Rédige une liste de 5 points, en français, ton professionnel mais accessible aux managers de production. »</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Itérez :</span> si le résultat est moyen, demandez « Reformule en étant plus concis » ou « Ajoute un exemple concret pour un opérateur de ligne. »</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Jamais de données personnelles réelles :</span> remplacez les noms réels par des pseudonymes dans vos tests et usages courants.</div></li>
+      </ul>
+      <div class="quiz" id="quiz-2">
+        <p class="quiz-q">Quel prompt donnera le meilleur résultat pour une offre d'emploi ?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,false,2)">Rédige une offre d'emploi</button>
+          <button class="quiz-opt" onclick="answer(this,true,2)">Rédige une offre pour un technicien de maintenance en environnement de production médicale, CDI 35h, Pays de la Loire, ton direct, 200 mots max</button>
+          <button class="quiz-opt" onclick="answer(this,false,2)">Écris quelque chose pour recruter un technicien maintenance</button>
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button class="btn-done" onclick="markDone(2)">Marquer comme vu</button>
+      </div>
+    </div>
+
+    <!-- Module 3 -->
+    <div class="module-card" id="card-3" onclick="toggle(3)">
+      <div class="module-header">
+        <span class="module-num">04</span>
+        <span class="module-tag tag-ethique">Éthique & cadre</span>
+      </div>
+      <h3>Limites, risques et bonnes pratiques</h3>
+      <p>RGPD, biais, données sensibles : ce qu'un RH doit absolument maîtriser.</p>
+      <div class="module-footer">
+        <span class="duration">15 min</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="done-pill" id="done-3">Vu ✓</span>
+          <span class="caret">↓</span>
+        </div>
+      </div>
+    </div>
+    <div class="module-panel" id="panel-3">
+      <p class="panel-intro">Les RH traitent des données parmi les plus sensibles de l'entreprise. Dans un secteur aussi réglementé que le médical, l'IA amplifie les risques si on ne prend pas quelques précautions simples mais essentielles.</p>
+      <ul class="tips">
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">RGPD :</span> ne jamais entrer de données nominatives de salariés dans un outil IA grand public sans accord juridique ou DPA signé avec l'éditeur.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Biais algorithmiques :</span> l'IA reproduit les biais de ses données d'entraînement. En recrutement, relisez toujours les suggestions avec un œil critique sur les critères de sélection.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Hallucinations :</span> l'IA peut inventer des articles de loi ou des jurisprudences. Vérifiez toujours les références légales sur Légifrance ou auprès de votre conseil.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Responsabilité :</span> l'IA assiste, elle ne décide pas. La signature d'un contrat, d'un avertissement ou d'une rupture reste une décision humaine et engagée.</div></li>
+        <li><span class="tip-arrow">→</span><div><span class="tip-label">Transparence :</span> indiquez à vos interlocuteurs internes quand un document a été rédigé avec l'aide de l'IA, si le contexte le justifie.</div></li>
+      </ul>
+      <div class="quiz" id="quiz-3">
+        <p class="quiz-q">Quiz : que faire si l'IA cite une jurisprudence pour justifier une décision disciplinaire ?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(this,false,3)">L'utiliser directement si ça semble cohérent</button>
+          <button class="quiz-opt" onclick="answer(this,true,3)">Vérifier la référence sur Légifrance avant toute utilisation</button>
+          <button class="quiz-opt" onclick="answer(this,false,3)">Ne jamais utiliser l'IA pour des sujets disciplinaires</button>
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button class="btn-done" onclick="markDone(3)">Marquer comme vu</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="charte-section">
+  <div class="section-label">Pour aller plus loin</div>
+  <div class="charte-card">
+    <h2>Les 5 règles d'or RH × IA</h2>
+    <p>À afficher dans votre espace ou à partager avec votre équipe.</p>
+    <ul class="charte-rules">
+      <li class="charte-rule"><span class="rule-num">1</span>Je ne saisis jamais de données personnelles réelles dans un outil grand public.</li>
+      <li class="charte-rule"><span class="rule-num">2</span>Je vérifie toujours les références juridiques que l'IA me fournit.</li>
+      <li class="charte-rule"><span class="rule-num">3</span>Je relis les textes de recrutement pour détecter les biais éventuels.</li>
+      <li class="charte-rule"><span class="rule-num">4</span>La décision finale reste humaine — l'IA n'est qu'un outil d'aide.</li>
+      <li class="charte-rule"><span class="rule-num">5</span>Je précise mon contexte métier dans chaque prompt important.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  Kit Acculturation IA · Équipe RH · Medtech — Prototype pédagogique
+</footer>
+
+<script>
+const completed = new Set();
+let openIdx = null;
+
+function toggle(i) {
+  if (openIdx === i) { closePanel(i); openIdx = null; return; }
+  if (openIdx !== null) closePanel(openIdx);
+  openPanel(i);
+  openIdx = i;
+}
+function openPanel(i) {
+  document.getElementById('card-' + i).classList.add('active');
+  document.getElementById('panel-' + i).classList.add('open');
+}
+function closePanel(i) {
+  document.getElementById('card-' + i).classList.remove('active');
+  document.getElementById('panel-' + i).classList.remove('open');
+}
+function markDone(i) {
+  closePanel(i); openIdx = null;
+  completed.add(i);
+  document.getElementById('done-' + i).style.display = 'inline-block';
+  document.getElementById('dot-' + i).classList.add('done');
+  const n = completed.size;
+  document.getElementById('bar').style.width = (n / 4 * 100) + '%';
+  document.getElementById('prog-text').textContent = n + ' module' + (n > 1 ? 's' : '') + ' terminé' + (n > 1 ? 's' : '');
+  document.getElementById('nav-label').textContent = n + '/4';
+}
+function answer(btn, correct, idx) {
+  const quiz = document.getElementById('quiz-' + idx);
+  quiz.querySelectorAll('.quiz-opt').forEach(b => { b.disabled = true; });
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) quiz.querySelectorAll('.quiz-opt').forEach(b => { if (b !== btn) b.classList.add('correct'); });
+}
+</script>
+</body>
+</html>
